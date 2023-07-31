@@ -1,6 +1,5 @@
 package com.deltacapita.shoppingcart;
 
-import com.deltacapita.shoppingcart.model.Item;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +14,10 @@ public class Basket {
 
   public List<String> items() {
     return Collections.unmodifiableList(items);
+  }
+
+  public long quantity(String itemName) {
+    return items().stream().filter(itemName::equals).count();
   }
 
 }
