@@ -20,18 +20,29 @@ class BasketCheckoutTest {
 
   @Mock
   private Basket basket;
+  @Mock
+  private Checkout pricingDiscount;
 
   private Checkout checkout;
 
   @BeforeEach
   public void setup() {
-    checkout = new BasketCheckout(basket, new PricingLookup());
+    checkout = new BasketCheckout(basket, new PricingLookup(), pricingDiscount);
   }
 
   @Test
   @DisplayName("Total price of the items added to the basket can be calculated correctly")
   void shouldCalculateTheTotalPrice() {
     when(basket.items()).thenReturn(List.of("Apple", "Apple", "Banana", "Lime", "Melon"));
+    when(pricingDiscount.calculate()).thenReturn(BigDecimal.ZERO);
+    assertThat(checkout.calculate(), is(BigDecimal.valueOf(1.55)));
+  }
+
+  @Test
+  @DisplayName("Total price of the items added to the basket can be calculated correctly after applying the discount")
+  void shouldCalculateTheTotalPriceWithDiscount() {
+    when(basket.items()).thenReturn(List.of("Apple", "Apple", "Banana", "Lime", "Melon", "Melon"));
+    when(pricingDiscount.calculate()).thenReturn(BigDecimal.valueOf(0.50));
     assertThat(checkout.calculate(), is(BigDecimal.valueOf(1.55)));
   }
 }

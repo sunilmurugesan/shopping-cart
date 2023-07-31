@@ -6,13 +6,17 @@ import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BasketCheckout implements Checkout{
+public class BasketCheckout implements Checkout {
 
   private final Basket basket;
   private final PricingLookup pricingLookup;
+  private final Checkout discount;
 
   @Override
   public BigDecimal calculate() {
-    return basket.items().stream().map(pricingLookup::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal totalPrice = basket.items().stream()
+        .map(pricingLookup::getPrice)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    return totalPrice.subtract(discount.calculate());
   }
 }
