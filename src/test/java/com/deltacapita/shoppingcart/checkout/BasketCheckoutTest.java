@@ -2,24 +2,36 @@ package com.deltacapita.shoppingcart.checkout;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 
+import com.deltacapita.shoppingcart.Basket;
+import com.deltacapita.shoppingcart.data.PricingLookup;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class BasketCheckoutTest {
 
-  private BasketCheckout basketCheckout;
+  @Mock
+  private Basket basket;
+
+  private Checkout checkout;
 
   @BeforeEach
   public void setup() {
-    basketCheckout = new BasketCheckout();
+    checkout = new BasketCheckout(basket, new PricingLookup());
   }
 
   @Test
   @DisplayName("Total price of the items added to the basket can be calculated correctly")
   void shouldCalculateTheTotalPrice() {
-    assertThat(basketCheckout.calculate(), is(BigDecimal.ZERO));
+    when(basket.items()).thenReturn(List.of("Apple", "Apple", "Banana", "Lime", "Melon"));
+    assertThat(checkout.calculate(), is(BigDecimal.valueOf(1.55)));
   }
 }

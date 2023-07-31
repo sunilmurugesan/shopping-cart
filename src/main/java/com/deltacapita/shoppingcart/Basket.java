@@ -7,13 +7,13 @@ import java.util.List;
 
 public class Basket {
 
-  private final List<Item> items = new ArrayList<>();
+  private final List<String> items = new ArrayList<>();
 
-  public void addItem(Item item) {
+  public void addItem(String item) {
     items.add(item);
   }
 
-  public List<Item> items() {
+  public List<String> items() {
     return Collections.unmodifiableList(items);
   }
 
