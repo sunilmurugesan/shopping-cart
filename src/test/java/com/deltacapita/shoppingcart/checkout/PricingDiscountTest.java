@@ -8,6 +8,7 @@ import com.deltacapita.shoppingcart.Basket;
 import com.deltacapita.shoppingcart.data.DiscountLookup;
 import com.deltacapita.shoppingcart.data.PricingLookup;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,13 @@ class PricingDiscountTest {
   void shouldCalculateTheDiscountFor3ForThePriceOf2() {
     when(basket.items()).thenReturn(List.of("Lime", "Lime", "Lime", "Lime", "Melon"));
     assertThat(checkout.calculate(), is(BigDecimal.valueOf(0.15)));
+  }
+
+  @Test
+  @DisplayName("No Discount when the basket is empty")
+  void shouldCalculateNoDiscountEmptyBasket() {
+    when(basket.items()).thenReturn(Collections.emptyList());
+    assertThat(checkout.calculate(), is(BigDecimal.ZERO));
   }
 
 }

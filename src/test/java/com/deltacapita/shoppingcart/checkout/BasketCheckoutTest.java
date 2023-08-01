@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.deltacapita.shoppingcart.Basket;
 import com.deltacapita.shoppingcart.data.PricingLookup;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,5 +45,13 @@ class BasketCheckoutTest {
     when(basket.items()).thenReturn(List.of("Apple", "Apple", "Banana", "Lime", "Melon", "Melon"));
     when(pricingDiscount.calculate()).thenReturn(BigDecimal.valueOf(0.50));
     assertThat(checkout.calculate(), is(BigDecimal.valueOf(1.55)));
+  }
+
+  @Test
+  @DisplayName("Empty basket should calculate to zero total price")
+  void shouldCalculateToZeroForEmptyBasket() {
+    when(basket.items()).thenReturn(Collections.emptyList());
+    when(pricingDiscount.calculate()).thenReturn(BigDecimal.valueOf(0.00));
+    assertThat(checkout.calculate(), is(BigDecimal.valueOf(0.00)));
   }
 }

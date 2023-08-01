@@ -1,6 +1,7 @@
 package com.deltacapita.shoppingcart.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import com.deltacapita.shoppingcart.Basket;
@@ -67,6 +68,16 @@ public class ShoppingCartTest {
     Checkout discountCheckout = new PricingDiscount(basket, pricingLookup, discountLookup);
     Checkout checkout = new BasketCheckout(basket, pricingLookup, discountCheckout);
     assertThat(checkout.calculate(), is(BigDecimal.valueOf(1.35)));
+  }
+
+  @Test
+  @DisplayName("Total price of the items added to the basket is zero when basket is empty")
+  void shouldCalculateToZeroForEmptyBasket() {
+    assertThat(basket.items(), hasSize(0));
+
+    Checkout discountCheckout = new PricingDiscount(basket, pricingLookup, discountLookup);
+    Checkout checkout = new BasketCheckout(basket, pricingLookup, discountCheckout);
+    assertThat(checkout.calculate(), is(BigDecimal.ZERO));
   }
 
 }
