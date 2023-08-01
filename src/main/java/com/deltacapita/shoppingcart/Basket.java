@@ -16,8 +16,4 @@ public class Basket {
     return Collections.unmodifiableList(items);
   }
 
-  public long quantity(String itemName) {
-    return items().stream().filter(itemName::equals).count();
-  }
-
 }
